@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Topic 3: 1-way Analysis of Variance</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Januar Harianto" />
+    <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <script src="index_files/kePrint-0.0.1/kePrint.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } },
+      });
+    </script>
+    <style>
+    .mjx-mrow a {
+      color: black;
+      pointer-events: none;
+      cursor: default;
+    }
+    </style>
+    <link rel="stylesheet" href="assets/sydney-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/sydney.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Topic 3: 1-way Analysis of Variance
+## ENVX2001 – Applied Statistical Methods
+### Januar Harianto
+
+---
+
+
+
+
+
+
+## Outline
+
+&lt;table class="table" style="font-size: 16px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Week &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Lecturer &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Lecture Topic &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Assessment &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Lab &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr grouplength="6"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 1: Designed Studies&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Januar Harianto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Introduction: Surveys &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Januar Harianto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Surveys: Sampling designs &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;font-weight: bold;color: darkgreen !important;" indentlevel="1"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; Januar Harianto &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; ANOVA I: One-way Analysis of Variance (ANOVA) &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; Lab 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANOVA II: Introduction to experimental design &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Report 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No Labs &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANOVA III: ANOVA with  blocking &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANOVA IV: ANOVA with 2 or more factors &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr grouplength="6"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 2: Finding Patterns in Data&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Regression I: Multiple linear regression &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Report 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Regression II: Variable selection &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Regression III: Predictive modelling &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multivariate analysis I: Principal component analysis (PCA) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multivariate analysis II: Clustering &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Multivariate analysis III: MDS and MANOVA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 11 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr grouplength="1"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 3: Revision&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TBA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Revision &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Presentation &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lab 12 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Outline
+
+.pull-left[
+
+### Two-sample t-test
+![:scale 50%](assets/figs/will.png)
+
+[William Gosset (1908)](https://medium.com/value-stream-design/the-curious-tale-of-william-sealy-gosset-b3178a9f6ac8)
+]
+
+
+.pull-right[
+### Analysis of Variance (ANOVA)
+![:scale 50%](assets/figs/ronald.png)
+
+[Ronald Fisher (1925)](https://link.springer.com/chapter/10.1007/978-1-4612-4380-9_7)
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Learning outcomes
+
+
+At the end of this topic students should be able to:
+- Describe the concept of how the ANOVA is used to determine whether there is a statistically significant difference in the means of treatments;
+- Demonstrate proficiency in the use of R (and interpretation of the output) for performing an analysis of variance (ANOVA) on experimental data with 1 treatment factor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Revisiting the t-test
+
+### Example
+
+.pull-left[
+- Weights of two breeds of cattle are to be compared
+- Twelve cattle from Breed 1 were randomly sampled, and another 15 weights from Breed 2 were also recorded
+]
+
+.pull-right[
+&lt;table class="table" style="font-size: 16px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Breed1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Breed2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 187.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 148.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 180.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 146.2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 198.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 152.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 190.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135.3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 196.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 151.2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 203.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 146.3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 190.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 163.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 201.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 146.6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 194.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 162.4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 221.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 140.2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 186.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 159.4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 203.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 181.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 165.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 165.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 141.6 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+
+### 1. Import data
+
+
+```r
+cattle &lt;- read_csv("assets/tables/cattle.csv") %&gt;%
+  pivot_longer(cols = starts_with("Breed"), names_to = "breed", values_to = "weight") %&gt;%
+  mutate(breed = as.factor(breed))
+```
+We are [tidying the data](https://r4ds.had.co.nz/tidy-data.html). 
+
+.pull-left[
+**Before**
+.scroll-box-10[
+
+```
+## # A tibble: 15 x 2
+##    Breed1 Breed2
+##     &lt;dbl&gt;  &lt;dbl&gt;
+##  1   188.   148.
+##  2   180.   146.
+##  3   199.   153.
+##  4   191.   135.
+##  5   196.   151.
+##  6   204.   146.
+##  7   190.   164.
+##  8   201    147.
+##  9   195.   162.
+## 10   221.   140.
+## 11   187.   159.
+## 12   203.   182.
+## 13    NA    165.
+## 14    NA    165 
+## 15    NA    142.
+```
+]
+]
+
+.pull-right[
+**After**
+.scroll-box-10[
+
+```
+## # A tibble: 30 x 2
+##    breed  weight
+##    &lt;fct&gt;   &lt;dbl&gt;
+##  1 Breed1   188.
+##  2 Breed2   148.
+##  3 Breed1   180.
+##  4 Breed2   146.
+##  5 Breed1   199.
+##  6 Breed2   153.
+##  7 Breed1   191.
+##  8 Breed2   135.
+##  9 Breed1   196.
+## 10 Breed2   151.
+## # … with 20 more rows
+```
+]
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+.pull-left[
+###2. Descriptive statistics (mean)
+
+
+```r
+with(cattle, mean(weight[breed == "Breed1"], 
+  na.rm = TRUE))
+```
+
+```
+## [1] 196.175
+```
+
+```r
+with(cattle, mean(weight[breed == "Breed2"], 
+  na.rm = TRUE))
+```
+
+```
+## [1] 153.7
+```
+]
+
+.pull-right[
+### 3. Descriptive statistics (sd)
+
+
+```r
+with(cattle, sd(weight[breed == "Breed1"], 
+  na.rm = TRUE))
+```
+
+```
+## [1] 10.61604
+```
+
+```r
+with(cattle, sd(weight[breed == "Breed2"], 
+  na.rm = TRUE))
+```
+
+```
+## [1] 12.30139
+```
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+### 4. Visual check
+
+
+```r
+ggplot(cattle, aes(breed, weight)) +
+  geom_boxplot()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" width="400" /&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+### 5. Model assumptions
+
+#### Normality
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+### 6. Perform the t-test
+
+
+```r
+# t.test(cattle$Breed1, cattle$Breed2, var.equal = TRUE)
+with(cattle, t.test(weight[breed == "Breed1"], weight[breed == "Breed2"],
+  var.equal = TRUE))
+```
+
+```
+## 
+## 	Two Sample t-test
+## 
+## data:  weight[breed == "Breed1"] and weight[breed == "Breed2"]
+## t = 9.4624, df = 25, p-value = 9.663e-10
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  33.23011 51.71989
+## sample estimates:
+## mean of x mean of y 
+##   196.175   153.700
+```
+
+
+
+
+---
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Readings
+
+- Quinn &amp; Keough (2002)
+  - Chapter 7: Section 7.1
+- Mead et al. (2002)
+  - Chapter 18: Sections 18.1-18.3 (most is for finite populations but useful for conceptual understanding)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="assets/macros.js"></script>
+<script src="assets/remark-zoom.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

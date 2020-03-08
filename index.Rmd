@@ -1,0 +1,319 @@
+---
+title: "Topic 3: 1-way Analysis of Variance "
+subtitle: "ENVX2001 -- Applied Statistical Methods"
+author: "Januar Harianto"
+# date: "Updated `r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "assets/sydney-fonts.css", "assets/sydney.css"]
+    self_contained: false # if true, fonts will be stored locally
+    seal: true # show a title slide with YAML information
+    includes:
+      in_header: "assets/mathjax-equation-numbers.html"
+    nature:
+      beforeInit: ["assets/macros.js", "assets/remark-zoom.js", "https://platform.twitter.com/widgets.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: false # disable slide transitions by scrolling
+---
+
+```{r, load_refs, echo=FALSE, cache=FALSE, message=FALSE}
+library(RefManageR)
+library(readr)
+library(kableExtra)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+options(knitr.kable.NA = '')
+
+BibOptions(check.entries = FALSE, 
+           bib.style = "authoryear", 
+           cite.style = 'authoryear', 
+           style = "markdown",
+           hyperlink = FALSE, 
+           dashed = FALSE)
+myBib <- ReadBib("assets/example.bib", check = FALSE)
+```
+
+
+
+## Outline
+
+```{r, echo=FALSE, message=FALSE}
+read_csv("assets/tables/envx2001_outline.csv") %>%
+  kable() %>%
+  # collapse_rows(columns = 1:6, valign = "top") %>%
+  kable_styling(font_size = 16) %>%
+  pack_rows("Part 1: Designed Studies", 1, 6) %>%
+  pack_rows("Part 2: Finding Patterns in Data", 7, 12) %>%
+  pack_rows("Part 3: Revision", 13, 13) %>%
+  row_spec(c(3), bold = TRUE, color = "darkgreen")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Outline
+
+.pull-left[
+
+### Two-sample t-test
+![:scale 50%](assets/figs/will.png)
+
+[William Gosset (1908)](https://medium.com/value-stream-design/the-curious-tale-of-william-sealy-gosset-b3178a9f6ac8)
+]
+
+
+.pull-right[
+### Analysis of Variance (ANOVA)
+![:scale 50%](assets/figs/ronald.png)
+
+[Ronald Fisher (1925)](https://link.springer.com/chapter/10.1007/978-1-4612-4380-9_7)
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Learning outcomes
+
+
+At the end of this topic students should be able to:
+- Describe the concept of how the ANOVA is used to determine whether there is a statistically significant difference in the means of treatments;
+- Demonstrate proficiency in the use of R (and interpretation of the output) for performing an analysis of variance (ANOVA) on experimental data with 1 treatment factor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Revisiting the t-test
+
+### Example
+
+.pull-left[
+- Weights of two breeds of cattle are to be compared
+- Twelve cattle from Breed 1 were randomly sampled, and another 15 weights from Breed 2 were also recorded
+]
+
+.pull-right[
+```{r, echo=F, message=F}
+cattle <- read_csv("assets/tables/cattle.csv")
+kable(cattle) %>%
+  kable_styling(font_size = 16)
+  
+```
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+
+### 1. Import data
+
+```{r, message=F}
+cattle <- read_csv("assets/tables/cattle.csv") %>%
+  pivot_longer(cols = starts_with("Breed"), names_to = "breed", values_to = "weight") %>%
+  mutate(breed = as.factor(breed))
+  
+```
+We are [tidying the data](https://r4ds.had.co.nz/tidy-data.html). 
+
+.pull-left[
+**Before**
+.scroll-box-10[
+```{r, echo=F, message=F}
+read_csv("assets/tables/cattle.csv")
+```
+]
+]
+
+.pull-right[
+**After**
+.scroll-box-10[
+```{r, echo=F}
+cattle
+```
+]
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+.pull-left[
+###2. Descriptive statistics (mean)
+
+```{r}
+with(cattle, mean(weight[breed == "Breed1"], 
+  na.rm = TRUE))
+
+with(cattle, mean(weight[breed == "Breed2"], 
+  na.rm = TRUE))
+```
+]
+
+.pull-right[
+### 3. Descriptive statistics (sd)
+
+```{r}
+with(cattle, sd(weight[breed == "Breed1"], 
+  na.rm = TRUE))
+with(cattle, sd(weight[breed == "Breed2"], 
+  na.rm = TRUE))
+```
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+### 4. Visual check
+
+```{r, warning=F, out.width=400}
+ggplot(cattle, aes(breed, weight)) +
+  geom_boxplot()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+
+### 5. Model assumptions
+
+#### Normality
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## 2-sample t-test
+### 6. Perform the t-test
+
+```{r}
+# t.test(cattle$Breed1, cattle$Breed2, var.equal = TRUE)
+with(cattle, t.test(weight[breed == "Breed1"], weight[breed == "Breed2"],
+  var.equal = TRUE))
+```
+
+
+
+
+---
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Readings
+
+- Quinn & Keough (2002)
+  - Chapter 7: Section 7.1
+- Mead et al. (2002)
+  - Chapter 18: Sections 18.1-18.3 (most is for finite populations but useful for conceptual understanding)
