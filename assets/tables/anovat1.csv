@@ -1,0 +1,4 @@
+﻿Source,df,Sums-of-square (SS),Mean-square (MS),F statistic
+Treatment,\(t-1\),\(SS_{trt}\),\(SS_{trt}/df_{trt}\),\(MS_{trt}/Ms_{res}\)
+Residual,\(N-t\),\(SS_{res}\),\(SS_{res}/df_{res}\),
+Total,\(N-1\),\(SS_{tot}\),\(SS_{tot}/df_{tot}\),

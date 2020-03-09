@@ -307,10 +307,10 @@ At the end of this topic students should be able to:
 
 
 ---
-## 2-sample t-test
+## Two-sample t-test
 
 
-### 1. Import data
+### Import data
 
 
 ```r
@@ -318,7 +318,7 @@ cattle &lt;- read_csv("assets/tables/cattle.csv") %&gt;%
   pivot_longer(cols = starts_with("Breed"), names_to = "breed", values_to = "weight") %&gt;%
   mutate(breed = as.factor(breed))
 ```
-We are [tidying the data](https://r4ds.had.co.nz/tidy-data.html). 
+[Tidying the data](https://r4ds.had.co.nz/tidy-data.html)  (FYI). 
 
 .pull-left[
 **Before**
@@ -385,9 +385,9 @@ We are [tidying the data](https://r4ds.had.co.nz/tidy-data.html).
 
 
 ---
-## 2-sample t-test
+## Two-sample t-test
 .pull-left[
-###2. Descriptive statistics (mean)
+### Descriptive statistics (mean)
 
 
 ```r
@@ -410,7 +410,7 @@ with(cattle, mean(weight[breed == "Breed2"],
 ]
 
 .pull-right[
-### 3. Descriptive statistics (sd)
+### Descriptive statistics (sd)
 
 
 ```r
@@ -445,38 +445,59 @@ with(cattle, sd(weight[breed == "Breed2"],
 
 
 ---
-## 2-sample t-test
+## Two-sample t-test
 
-### 4. Visual check
+### Model assumptions: Equal variances
+- `\(\sigma^2_1 \approx \sigma^2_2\)`
+- General guide: `\(\frac{larger\ standard\ deviation}{smaller\ standard\ deviation} &lt; 2.0\)`
+
+
+```r
+12.30139/10.61604
+```
+
+```
+## [1] 1.158755
+```
+
+- Only difference between the two distributions is where the distribution located, otherwise the same
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Two-sample t-test
+
+### Model assumptions: Normality
+.pull-left[
+
+
 
 
 ```r
 ggplot(cattle, aes(breed, weight)) +
-  geom_boxplot()
+  geom_boxplot() + cowplot::theme_cowplot()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-8-1.png" width="400" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="400" /&gt;
+]
 
+.pull-right[
 
+```r
+hist(cattle$weight)
+```
 
-
-
-
-
-
-
-
-
-
----
-## 2-sample t-test
-
-### 5. Model assumptions
-
-#### Normality
-
-
-
+&lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" width="400" /&gt;
+]
 
 
 
@@ -488,12 +509,63 @@ ggplot(cattle, aes(breed, weight)) +
 
 
 ---
-## 2-sample t-test
-### 6. Perform the t-test
+## Two-sample t-test
+### Model assumptions: Normality
+
+- `\(y_{i,j} \sim N(\mu_i, \sigma^2)\)` or `\(\varepsilon_{i,j} \sim N(\mu_i, \sigma^2)\)`
 
 
 ```r
-# t.test(cattle$Breed1, cattle$Breed2, var.equal = TRUE)
+shapiro.test(cattle$weight)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  cattle$weight
+## W = 0.93704, p-value = 0.103
+```
+
+- If p &gt; 0.05, the distribution of the `cattle` data is not significantly different from a normal distribution, *i.e.* we can assume normality.
+
+
+
+
+
+---
+## Two-sample t-test
+### Model equation
+
+- Observed data = Group Mean + Random Error (residuals)
+`$$y_{i,j} = \mu_i + \varepsilon_{i,j}$$`
+- `\(i = 1, 2\ (group)\)`; `\(j = 1, 2, ..., n_i\ (replicate)\)`
+
+In cattle example:
+- `\(\mu_1\)` = mean body weight (kg) for cattle in Breed 1
+- `\(\mu_2\)` = mean body weight (kg) for cattle in Breed 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Two-sample t-test
+### T-test
+
+
+```r
 with(cattle, t.test(weight[breed == "Breed1"], weight[breed == "Breed2"],
   var.equal = TRUE))
 ```
@@ -511,6 +583,971 @@ with(cattle, t.test(weight[breed == "Breed1"], weight[breed == "Breed2"],
 ## mean of x mean of y 
 ##   196.175   153.700
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Two-sample t-test
+### Interpretation
+
+.center[
+![:scale 75%](assets/figs/onetwotail.png)
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Two-sample t-test
+### Hypothesis testing
+
+- Null hypothesis: `$$H_0:\mu_1 = \mu_2$$`
+- Alternate hypothesis: `$$H_1:\mu_1 \neq \mu_2$$`
+- Test statistic: `$$t= \frac{\bar y_2 - \bar y_1}{\sqrt{s^2(\frac{1}{n_2} + \frac{1}{n_1})}} = \frac{\bar y_2 - \bar y_1}{se(\bar y_2 - \bar y_1)} = \frac{\Delta\ in\ mean}{standard\ error\ of\ the\ \Delta \ in\ mean}$$`
+- Degrees of freedom: `$$n_1 + n_2 - 2$$`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## T-distribution
+
+.pull-left[
+- changes shape with datasets size – degrees of freedom (df)
+- as n increases &gt;&gt; closer to normal distribution
+- for standard normal distribution, 95% observations found in interval [-1.96,1.96]
+]
+
+.pull-right[
+![:scale 100%](assets/figs/df.png)
+]
+
+
+
+
+
+
+
+
+---
+## Analysis of Variance (ANOVA)
+### Example
+
+.pull-left[
+- A study was undertaken to compare the weight gains (g) of chicks on four different diets
+- Twenty similar chicks were used in the study and were randomly allocated to one of the four groups
+- The allocation was done in such a way as to have equal replication (five chicks) in each treatment group
+]
+
+.pull-right[
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Diet 1 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Diet 2 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Diet 3 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Diet 4 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 169 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 112 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 137 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 169 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 85 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 94 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 154 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Should we use a t-test?
+
+- We have 4 treatments
+- We could do a series of t-tests for the 6 possible pairwise comparisons
+  - 1 vs 2; 1 vs 3; 1 vs 4; 2 vs 3; 2 vs 4; 3 vs 4
+- **Problem:**  even if the true differences between treatment (population) means differ, each test has a 5% probability of incorrectly finding significant results
+  - 6 tests, we have 0.95&lt;sup&gt;6&lt;/sup&gt; = 0.735 = 73.5% of getting all correct
+  - 26.5% chance of getting at least 1 incorrect
+- We need a method to test for the equality of treatments simultaneously
+  - This avoids the problem of multiple comparisons
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+
+
+- Differences between the 4 diets
+  - treatment effect
+- Differences within diets
+  - due to background random environmental fluctuations, genetics, experimental error
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+Which model best describes data?
+
+.center[
+.pull-left[
+.center[Group means shown separately]
+]
+.pull-right[
+.center[Overall mean]
+]
+![:scale 90%](assets/figs/gmeans.png)
+]
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA: Terminology
+
+- Suppose in general that we have `\(t\)` different treatments, and have drawn samples of size `\(n_1, n_2, ..., n_t\)` from the 1&lt;sup&gt;st&lt;/sup&gt;, 2&lt;sup&gt;nd&lt;/sup&gt;, …, `\(t\)`&lt;sup&gt;th&lt;/sup&gt; population
+- The total number of observations is `\(n_1, n_2, ..., n_t = N\)`. In the diets example, there are `\(t = 4\)` treatments, with equal replication `\((n_1 = n_2 = n_3 = n_4 = 5)\)` with `\(N = 20\)`
+- For equally replicated designs, we will use `\(r\)` as the number of replicates per group (with `\(N = rt\)`)
+- In the chick example, there is only **one factor** or treatment factor (diet)
+- That factor has 4 levels (the 4 diet options).
+- Hence the ANOVA conducted on these data is a **1-way (or 1-factor)** ANOVA 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Model equation
+
+- Observed data = Group Mean + Random Error (residuals)
+`$$y_{i,j} = \mu_i + \varepsilon_{i,j}$$`
+- `\(i = 1, 2\ (group)\)`; `\(j = 1, 2, ..., n_i\ (replicate)\)`
+
+In cattle example:
+- `\(y_{i,j}\)` = observed weight gain for `\(j\)`&lt;sup&gt;th&lt;/sup&gt; chicken on Diet `\(i\)`;
+
+- `\(\mu_i\)` = mean weight gain for chicks on Diet, `\(i\)`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Model assumptions: Normality
+
+
+.pull-left[
+- `\(y_{i,j} \sim N(\mu_i, \sigma^2)\)` or `\(\varepsilon_{i,j} \sim N(\mu_i, \sigma^2)\)`
+- Check this assumptions using a histogram, boxplot for each group
+- Or examine residuals (Topic 4)
+
+.small[
+
+```r
+chicks &lt;- read_csv("assets/tables/chicks.csv") %&gt;%
+  pivot_longer(cols = starts_with("Diet"), 
+    names_to = "diet", 
+    values_to = "weight") %&gt;%
+  mutate(diet = as.factor(diet)) 
+```
+]
+]
+
+.pull-right[
+
+
+```r
+ggplot(chicks, aes(diet, weight)) +
+  geom_boxplot() 
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" width="400" /&gt;
+]
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Model assumptions: Normality
+
+.pull-left[
+
+```r
+hist(chicks$weight)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" width="450" /&gt;
+]
+
+
+.pull-right[
+
+```r
+shapiro.test(chicks$weight)
+```
+
+```
+## 
+## 	Shapiro-Wilk normality test
+## 
+## data:  chicks$weight
+## W = 0.93272, p-value = 0.1742
+```
+
+- If p &gt; 0.05, the distribution of the `cattle` data is not significantly different from a normal distribution, *i.e.* we can assume normality.
+]
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Model assumptions: Equal variances
+- `\(\sigma^2_1 = \sigma^2_2 =  ... = \sigma^2_t\)`
+- General guide: `\(\frac{largest\ standard\ deviation}{smallest\ standard\ deviation} &lt; 2.0\)`
+- Alternatively: perform a formal hypothesis test, e.g. Bartlett’s test of homogeneity of variance. 
+
+
+```r
+bartlett.test(weight ~ diet, data = chicks)
+```
+
+```
+## 
+## 	Bartlett test of homogeneity of variances
+## 
+## data:  weight by diet
+## Bartlett's K-squared = 0.85164, df = 3, p-value = 0.8371
+```
+
+- **Bartlett's test is not reliable if data is not normal**
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Hypothesis testing
+
+- Null hypothesis: `$$H_0:\mu_1 = \mu_2 = ... = \mu_t$$`
+- Alternate hypothesis: `$$H_1:not\ all\ \mu_i\ are\ equal$$`
+
+- **Important:** only tells us that at least 2 treatment (group) means are different
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Concept
+
+- Partition the variability of the data into components:
+  - Differences due to treatments
+  - Residual variation
+
+.center[
+&gt; Total Sums-of-Square (SS) = Treatment SS + Residual SS
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA 
+### Table
+
+- Partition the variability of the data into components:
+  - Differences due to treatments
+  - Residual variation
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; df &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Sums-of-square (SS) &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Mean-square (MS) &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; F statistic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Treatment &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(t-1\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{trt}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{trt}/df_{trt}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(MS_{trt}/Ms_{res}\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(N-t\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{res}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{res}/df_{res}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(N-1\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{tot}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{tot}/df_{tot}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.small[
+.center[
+`\(N\)` = number of observations, `\(t\)` = treatment levels
+]
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Calculations
+
+
+Total sum-of-squares, `\(SS_{tot}\)`
+
+
+`$$SS_{tot} = \sum(data - overall\ mean)^2$$`
+
+
+```r
+library(dplyr) # load package
+overall_mean &lt;- mean(chicks$weight) # calculate overall mean
+tot_ss &lt;- mutate(chicks, sst = (weight - overall_mean)^2) # calculate (data - overall mean)^2
+sum(tot_ss$sst) # sum for total ss
+```
+
+```
+## [1] 29678.95
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Calculations
+Treatment sum-of-squares, `\(SS_{trt}\)`
+
+`$$SS_{trt} = \sum n_i \times (group\ mean - overall\ mean)^2$$`
+
+
+```r
+# using dplyr again
+chicks &lt;- group_by(chicks, diet) # group by diet, so that we can summarise by group
+grp &lt;- summarise(chicks, grp_mean = mean(weight)) # summarise by group
+trt_ss &lt;- mutate(grp, sstr = (grp_mean - overall_mean)^2) # calculate (grp mean - overall mean)^2 
+5* sum(trt_ss$sstr) # sum for treatment ss
+```
+
+```
+## [1] 16466.95
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+### Calculations
+Residual sum-of-squares, `\(SS_{res}\)`
+
+`$$SS_{res} = \sum(data - group\ mean)^2$$`
+
+
+
+```r
+merged &lt;- merge(chicks, grp)
+res_ss &lt;- mutate(merged, ssr = (weight - grp_mean)^2)
+sum(res_ss$ssr)
+```
+
+```
+## [1] 13212
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA 
+### Table
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; df &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Sums-of-square (SS) &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Mean-square (MS) &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; F statistic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Treatment &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(t-1\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{trt}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{trt}/df_{trt}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(MS_{trt}/Ms_{res}\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(N-t\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{res}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{res}/df_{res}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(N-1\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{tot}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; \(SS_{tot}/df_{tot}\) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+### Chick weight example
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sums-of-square (SS) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Mean-square (MS) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; F statistic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Treatment &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16467 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5489 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.65 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13212 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 826 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29679 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1562 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+
+### R 
+
+```r
+model &lt;- aov(weight ~ diet, data = chicks)
+summary(model)
+```
+
+```
+##             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+## diet         3  16467    5489   6.647  0.004 **
+## Residuals   16  13212     826                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+### Table
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Source &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sums-of-square (SS) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Mean-square (MS) &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; F statistic &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Treatment &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16467 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5489 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.65 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Residual &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 13212 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 826 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Total &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29679 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1562 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt;  &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+- Test statistic: `$$F = \frac{treatment\ MS}{residual\ MS}; df = t - 1,\ N - 1$$`
+
+
+- the **residual MS** is an estimate of `\(\sigma^2\)`, so `\(s = \sqrt {residual\ MS} = \sqrt{826} = 28.7\)`
+- `\(s\)` is the pooled standard deviation from pooling `\(t\)` = 4 groups
+- treatment MS is also an estimate of `\(\sigma^2\)` (if the null hypothesis is true)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+- Test statistic: `$$F = \frac{treatment\ MS}{residual\ MS}; df = t - 1,\ N - t$$`
+
+- If the null hypothesis is true, the observed F statistic (variance ratio) will have a value around 1; large F values indicate the null hypothesis is false
+
+- Hypothesis test: Compare observed F statistic with F distribution with `\(t-1\)` and `\(N-t\)` degrees of freedom (d.f.), e.g. `\(Ft-1,\ N-t\)` or `\(F_{treat\ d.f., residual\ d.f.}\)`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+- Our example: `\(F = \frac{5489}{826} = 6.65\)` with `\(d.f. = 3,\ 16\)`
+- Probability of obtaining the observed test statistics or larger, `\(P = P(F_{3,16} &gt; 6.65 = 0.04)\)`
+- Since p-value is small ($&lt;0.05$) we *reject* the null hypothesis
+  - there are *significant differences* in mean weight gain amongst the 4 diets
+- Proportion of variability explained by diets: `$$\frac{Treatment\ SS}{Total SS} = 16647 \div 29679 = 0.55\ (55\%)$$`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+Which pairs of groups means are (statistically) different?
+
+
+.pull-left[
+- We could look at the 95% CI for each mean and see which overlap.
+
+`$$95\% CI = \bar y \pm t^{0.052}_{residual\ d.f.} \times se(\bar y)$$`
+
+.center[where]
+
+`$$se(\bar y) = \sqrt{\frac{residual\ MS}{n_i}}$$`
+
+and `\(n_i\)` is the number of replicates in treatment, `\(i\)`
+]
+
+
+
+.pull-right[
+- e.g. for `Diet 4`:
+
+`$$95\% CI = 142.8 \pm 2.12 \times \sqrt{\frac{826}{5}}$$`
+
+
+```r
+lower &lt;- 142.8 - 2.12 * sqrt(826/5) 
+upper &lt;- 142.8 + 2.12 * sqrt(826/5) 
+```
+
+`\(95\% CI\)` = [115.6, 170]
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## ANOVA
+
+Which pairs of groups means are (statistically) different?
+
+.pull-left[
+
+```r
+library(emmeans)
+emm &lt;- emmeans(model, "diet")
+emm
+```
+
+```
+##  diet   emmean   SE df lower.CL upper.CL
+##  Diet 1   79.0 12.9 16     51.8    106.2
+##  Diet 2   71.0 12.9 16     43.8     98.2
+##  Diet 3   81.4 12.9 16     54.2    108.6
+##  Diet 4  142.8 12.9 16    115.6    170.0
+## 
+## Confidence level used: 0.95
+```
+]
+
+.pull-right[
+
+```r
+plot(emm)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-30-1.png" width="420" /&gt;
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Summary
+
+- 2-sample t-tests are limited to situation when we have experiments with only 2 levels
+- The ANOVA allows us to analyse experiments with 2 or more treatment levels
+- It can be generalised to analyse any experiment, e.g. more than 1 treatment factors
+- The ANOVA table helps us determine whether there is a significant different between at least one pair of treatment means
+
+### Next week
+- How to (better) identify which pair(s) are significant different
+- How to test the model assumptions
+
+
+
+
+
 
 
 
