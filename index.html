@@ -4,8 +4,10 @@
     <title>Topic 3: 1-way Analysis of Variance</title>
     <meta charset="utf-8" />
     <meta name="author" content="Januar Harianto" />
+    <script src="index_files/header-attrs-2.6.4/header-attrs.js"></script>
     <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="index_files/kePrint-0.0.1/kePrint.js"></script>
+    <link href="index_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         TeX: { equationNumbers: { autoNumber: "AMS" } },
@@ -35,129 +37,6 @@ class: center, middle, inverse, title-slide
 
 
 
-
-## Outline
-
-&lt;table class="table" style="font-size: 16px; margin-left: auto; margin-right: auto;"&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Week &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Lecturer &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Lecture Topic &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Assessment &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Lab &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr grouplength="6"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 1: Designed Studies&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Januar Harianto &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Introduction: Surveys &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 1 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Januar Harianto &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Surveys: Sampling designs &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 2 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;font-weight: bold;color: darkgreen !important;" indentlevel="1"&gt; 3 &lt;/td&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; Januar Harianto &lt;/td&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; ANOVA I: One-way Analysis of Variance (ANOVA) &lt;/td&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;font-weight: bold;color: darkgreen !important;"&gt; Lab 3 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; ANOVA II: Introduction to experimental design &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Report 1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; No Labs &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 5 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; ANOVA III: ANOVA with  blocking &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 4 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 6 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Aaron Greenville &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; ANOVA IV: ANOVA with 2 or more factors &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 5 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr grouplength="6"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 2: Finding Patterns in Data&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 7 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Regression I: Multiple linear regression &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Report 2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 6 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 8 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Regression II: Variable selection &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 7 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 9 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Liana Pozza &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Regression III: Predictive modelling &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 8 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 10 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Multivariate analysis I: Principal component analysis (PCA) &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 9 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 11 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Multivariate analysis II: Clustering &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 10 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 12 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Mathew Crowther &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Multivariate analysis III: MDS and MANOVA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 11 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr grouplength="1"&gt;&lt;td colspan="5" style="border-bottom: 1px solid;"&gt;&lt;strong&gt;Part 3: Revision&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-   &lt;td style="text-align:right; padding-left: 2em;" indentlevel="1"&gt; 13 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; TBA &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Revision &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Presentation &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Lab 12 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
-
-
-
-
-
-
-
-
-
-
----
 ## Outline
 
 .pull-left[
@@ -487,7 +366,7 @@ ggplot(cattle, aes(breed, weight)) +
   geom_boxplot() + cowplot::theme_cowplot()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="400" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-9-1.png" width="400" /&gt;
 ]
 
 .pull-right[
@@ -496,7 +375,7 @@ ggplot(cattle, aes(breed, weight)) +
 hist(cattle$weight)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" width="400" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-10-1.png" width="400" /&gt;
 ]
 
 
@@ -894,7 +773,7 @@ ggplot(chicks, aes(diet, weight)) +
   geom_boxplot() 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" width="400" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" width="400" /&gt;
 ]
 
 
@@ -915,7 +794,7 @@ ggplot(chicks, aes(diet, weight)) +
 hist(chicks$weight)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" width="450" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" width="450" /&gt;
 ]
 
 
@@ -1514,7 +1393,7 @@ emm
 plot(emm)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-30-1.png" width="420" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" width="420" /&gt;
 ]
 
 
@@ -1637,6 +1516,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1654,17 +1559,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

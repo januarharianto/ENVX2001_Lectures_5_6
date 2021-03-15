@@ -40,32 +40,6 @@ myBib <- ReadBib("assets/example.bib", check = FALSE)
 ```
 
 
-
-## Outline
-
-```{r, echo=FALSE, message=FALSE}
-read_csv("assets/tables/envx2001_outline.csv") %>%
-  kable() %>%
-  # collapse_rows(columns = 1:6, valign = "top") %>%
-  kable_styling(font_size = 16) %>%
-  pack_rows("Part 1: Designed Studies", 1, 6) %>%
-  pack_rows("Part 2: Finding Patterns in Data", 7, 12) %>%
-  pack_rows("Part 3: Revision", 13, 13) %>%
-  row_spec(c(3), bold = TRUE, color = "darkgreen")
-```
-
-
-
-
-
-
-
-
-
-
-
-
----
 ## Outline
 
 .pull-left[
